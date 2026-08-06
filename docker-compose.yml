@@ -1,0 +1,26 @@
+services:
+  kp9000-exporter:
+    image: python:3.12-alpine
+    container_name: kp9000-exporter
+    restart: unless-stopped
+    command: ["python", "/app/exporter.py"]
+    environment:
+      SWITCH_TARGETS: 192.168.0.3,192.168.0.4
+      SWITCH_USER: admin
+      SWITCH_PASS: admin
+      LISTEN_PORT: "9835"
+    volumes:
+      - ./exporter.py:/app/exporter.py:ro
+    ports:
+      - "9835:9835"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:9835/healthz || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
