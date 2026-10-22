@@ -17,16 +17,16 @@ script runs on a bare `python:3.12-alpine` with a single bind mount.
 
 ## Metrics
 
-| Metric | Type | Description |
-|---|---|---|
-| `kp9000_up` | gauge | web UI scrape succeeded |
-| `kp9000_scrape_duration_seconds` | gauge | scrape duration |
-| `kp9000_device_info` | gauge | model, MAC, firmware/hardware versions in labels |
-| `kp9000_port_enabled{port}` | gauge | port administratively enabled |
-| `kp9000_port_link_up{port}` | gauge | link is up |
-| `kp9000_port_speed_mbps{port}` | gauge | negotiated speed, Mbit/s (0 = link down) |
-| `kp9000_port_flow_control{port}` | gauge | flow control active |
-| `kp9000_port_{tx,rx}_{good,bad}_packets_total{port}` | counter | packet counters |
+| Metric                                               | Type    | Description                                      |
+| ---------------------------------------------------- | ------- | ------------------------------------------------ |
+| `kp9000_up`                                          | gauge   | web UI scrape succeeded                          |
+| `kp9000_scrape_duration_seconds`                     | gauge   | scrape duration                                  |
+| `kp9000_device_info`                                 | gauge   | model, MAC, firmware/hardware versions in labels |
+| `kp9000_port_enabled{port}`                          | gauge   | port administratively enabled                    |
+| `kp9000_port_link_up{port}`                          | gauge   | link is up                                       |
+| `kp9000_port_speed_mbps{port}`                       | gauge   | negotiated speed, Mbit/s (0 = link down)         |
+| `kp9000_port_flow_control{port}`                     | gauge   | flow control active                              |
+| `kp9000_port_{tx,rx}_{good,bad}_packets_total{port}` | counter | packet counters                                  |
 
 The switch counters are 32-bit and wrap around ~4.29 billion packets —
 `rate()` / `increase()` handle the wrap as an ordinary counter reset, just keep
@@ -38,13 +38,13 @@ to export beyond the above.
 
 ## Configuration (env)
 
-| Variable | Default | |
-|---|---|---|
+| Variable         | Default       |                                                       |
+| ---------------- | ------------- | ----------------------------------------------------- |
 | `SWITCH_TARGETS` | `192.168.0.3` | comma-separated switch addresses (host or `http://…`) |
-| `SWITCH_USER` | `admin` | login |
-| `SWITCH_PASS` | `admin` | password |
-| `LISTEN_PORT` | `9835` | `/metrics` port |
-| `SWITCH_TIMEOUT` | `5` | HTTP timeout towards the switch, seconds |
+| `SWITCH_USER`    | `admin`       | login                                                 |
+| `SWITCH_PASS`    | `admin`       | password                                              |
+| `LISTEN_PORT`    | `9835`        | `/metrics` port                                       |
+| `SWITCH_TIMEOUT` | `5`           | HTTP timeout towards the switch, seconds              |
 
 ## Running
 
@@ -77,3 +77,7 @@ container healthchecks there, not at `/metrics`.
   works exactly the same way.
 - Firmware V1.6 emits malformed HTML (`</td align="center">`); the parser is
   deliberately tolerant of it.
+
+## Development standard
+
+This repository adopts version 0.4.0 of the shared development standard. Read the [English guide](docs/en/development-standard.md) or [Russian guide](docs/ru/development-standard.md). The local toolkit checks staged secrets, changed-file formatting and bilingual documentation before merge. Existing product CI remains in place. Adoption is in progress; product acceptance and legacy-document translation are recorded separately in .repo-policy.json.
